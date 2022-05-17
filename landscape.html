@@ -5,16 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inline SVG</title>
-    
-    <style>
-        *{
-            /* background-color: #7fff00; */
-            margin:0;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <script src="landscape.js"></script>
 </head>
 <body>
-    <svg id="svg" width="1682" height="672" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+    <main>
+
+    
+    <svg id="svg" viewBox="0 0 1520 672"xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
         <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
         <g class="layer">
          <title>Layer 1</title>
@@ -42,7 +40,8 @@
         </g>
         <defs>
             <g id="pine">
-                <path d="M 50,5 95,97.5 5,97.5, Z" fill="green"/>
+                <path d="M 50 5 95 97.5 5 97.5 Z" fill="green"/>
+                <rect x="20" y="40" width="10" height="40" fill="brown"></rect>
             </g>
             <g id="oak">
                 <rect x="20" y="40" width="10" height="40" fill="brown"></rect>
@@ -53,19 +52,22 @@
             </g>
         </defs>
        </svg>
-       <div id="treeButtons">
-       <button id="pineButton" style="background-color: rgb(234, 45, 45);color: rgb(255,255,255); height:8vh;width:50%; margin-left: 25%; font-size:4vh">Create Pine Trees😊</button>
-       <button id="removeTrees" style="background-color: rgb(234, 45, 45);color: rgb(255,255,255); height:8vh;width:50%; margin-left: 25%; font-size:4vh">Remove all  Trees😊</button>
-       <button id="addOak" style="background-color: rgb(234, 45, 45);color: rgb(255,255,255); height:8vh;width:50%; margin-left: 25%; font-size:4vh">Add Oak Trees😊</button>
-       </div>
 
-       <div id="save" >
-           <input type="text" id="fileName" placeholder="Enter File Name"  style="background-color: rgb(234, 45, 45);color: rgb(255,255,255); height:8vh;width:50%; margin-left: 25%; font-size:4vh " >
-           <button data-format="svg" style="background-color: rgb(234, 45, 45);color: rgb(255,255,255); height:8vh;width:50%; margin-left: 25%; font-size:4vh " type="submit">Download SVG</button>
-           <button data-format="png" style="background-color: rgb(234, 45, 45);color: rgb(255,255,255); height:8vh;width:50%; margin-left: 25%; font-size:4vh " type="submit">Download PNG</button>
-       </form>
+       <div id="button">
+           <div id="treeButtons">
+               <button id="pineButton" >Create Pine Trees</button>
+               <button id="removeTrees" >Remove all Trees</button>
+               <button id="addOak">Create Oak Trees</button>
+            </div>
+            
+            <div id="save" >
+                <input type="text" id="fileName" placeholder="Enter File Name" >
+                <button data-format="svg" type="submit">Download SVG</button>
+                <button data-format="png" type="submit">Download PNG</button>
+            </div>
+        </div>
 
-       <script src="landscape.js"></script>
-      
+       
+    </main>
 </body>
 </html>
