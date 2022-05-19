@@ -10,9 +10,9 @@
 </head>
 <body>
     <main>
+        
+        <svg id="svg" viewBox="0 0 1520 672"xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
 
-    
-    <svg id="svg" viewBox="0 0 1520 672"xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
         <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
         <g class="layer">
          <title>Layer 1</title>
@@ -63,11 +63,24 @@
             <div id="save" >
                 <input type="text" id="fileName" placeholder="Enter File Name" >
                 <button data-format="svg" type="submit">Download SVG</button>
-                <button data-format="png" type="submit">Download PNG</button>
+                <button id="png" data-format="prepng" type="submit">Download PNG</button>
             </div>
         </div>
-
-       
     </main>
+    <div id="modal" class="modal closed">
+        <div id="modal-inside">
+            <span id="sp-input">
+                <input type="number" id="png-width" value="1520">
+                x
+                <input type="number" id="png-height" value="672">
+            </span>
+            <span>
+                <button id="downloadPNG" class="modal-button" data-format="png">Download</button>
+                <button id="cancelModal " class="modal-button">Cancel</button>
+            </span>
+            
+        </div>
+        
+    </div>
 </body>
 </html>

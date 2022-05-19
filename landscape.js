@@ -6,10 +6,30 @@ document.addEventListener('DOMContentLoaded',function(){
     const MAX_HEIGHT= +outerRect.getAttributeNS(null,'height');
     const pineElement=document.querySelector('#pine');
     const oak=document.querySelector('#oak');
-    const treeButtons=document.getElementById('treeButtons');
+    const treeButtons=document.querySelectorAll('#treeButtons button');
+    const saveButtons=document.querySelectorAll("#save button");
+    const modalButtons=document.querySelectorAll('#modal-inside .modal-button')
+    const downloadPNGButton=document.getElementById('downloadPNG');
+
     treeGenerator.init(outerRect,terrain,MAX_WIDTH,MIN_HEIGHT,MAX_HEIGHT,pineElement,oak);
-    treeButtons.addEventListener('click',function(e){
-        switch(e.target.id){
+    
+    for(const prop of treeButtons){
+        prop.addEventListener('click',drawTrees);
+    }
+
+    for(const prop of saveButtons){
+        prop.addEventListener('click',saveImg);
+    }
+
+    for(const prop of modalButtons){
+        prop.addEventListener('click',popModal)
+        
+    }
+
+    downloadPNGButton.addEventListener('click',saveImg);
+
+    function drawTrees(){
+            switch(this.id){
             case 'addOak':
                 treeGenerator.createOaks();
                 break;
@@ -22,17 +42,43 @@ document.addEventListener('DOMContentLoaded',function(){
             default:
                 return;
         }
-    })
+    }
 
-    document.getElementById('save').addEventListener('click',function(e){
-        const {format}=e.target.dataset;
-        if(format){
-            const svgData=document.getElementById('svg').outerHTML;
-            const name=document.getElementById('fileName').value;
-            imageSaver.save(name,format,svgData);
+    function saveImg(){
+        const {format}=this.dataset;
+        if(format==='prepng'){
+            //pop up modal
+            popModal();
+            
         }
-    });
-    
+        else{
+            
+            // console.log(svgData);
+            const name=document.getElementById('fileName').value;
+            if (format!=='png') {
+                width=1520;
+                height=672;
+            }
+            else{
+
+                width=document.getElementById('png-width').value;
+                height=document.getElementById('png-height').value;
+            }
+            const svgData2=document.getElementById('svg').cloneNode(true)
+            svgData2.setAttributeNS(null,'width',width)
+            svgData2.setAttributeNS(null,'height',height)
+            const svgData=svgData2.outerHTML;
+            imageSaver.save(name,format,svgData,width,height);
+            
+        }
+    }
+
+    function popModal(){
+        const modal=document.getElementById('modal');
+        
+        modal.classList.toggle('closed');
+        
+    }
 });
 
 
@@ -75,22 +121,6 @@ treeGenerator={
 
 
     createPineTrees(){
-        // for(let i=0; i<20;i++){
-        //     const pineClone=this.pineElement.cloneNode();
-        //     const x=this.getRandom(this.MAX_WIDTH,1)+30;
-        //     const y=this.getRandom(this.MAX_HEIGHT,this.MIN_HEIGHT)+30;
-        //     const randomWidth=this.getRandom(100,50);
-        //     const rect=pineClone.getElementsByTagName('rect')[0];
-        //     this.setSVGAttributes(pineClone,{class:'generatesPine',d:`M${x},${y}, ${x-randomWidth},${y} ${x-randomWidth/2} ${y-randomWidth*1.5} ,Z`,'data-yAxis':y})
-        //     this.setSVGAttributes(rect,{x:x,y:y});
-        //     this.myTrees.push(pineClone);
-    
-        // }
-        // // console.log(this.myTrees);
-        // const sortedTrees=this.orderByYAxis(this.myTrees);
-        // this.appendTreesInOrder(sortedTrees);
-
-
         for(let j=0;j<20;j++){
             const newElement= this.pineElement.cloneNode(true);
             // const pineClone=this.pineElement2.cloneNode();
@@ -120,7 +150,6 @@ treeGenerator={
             // myTrees.pop(prop);
         }
         this.myTrees=[];
-
     },
 
     appendTreesInOrder(trees){
@@ -157,18 +186,24 @@ treeGenerator={
 
 const imageSaver={
 
-    save(name,format,svgData){
+    save(name,format,svgData,width,height){
         this.name=name;
         this.format=format;
         this.svgData=svgData;
         this.parseImage();
+        this.width=width;
+        this.height=height;
+        
     },
+    
     parseImage(){
         
         
         if (this.name.length<1) {
             this.name="unnamed";
         }
+        // this.setSVGAttributes(null, {width:this.width,height:this.height});
+        
         const svgBlob= new Blob([this.svgData], {type: 'image/svg+xml'});
         const svgURL=URL.createObjectURL(svgBlob);
         if(this.format==='png'){
@@ -186,8 +221,9 @@ const imageSaver={
             img.src=svgURL;
             img.onload=(()=>{
             const canvas= document.createElement('canvas');
-            canvas.width=1520;
-            canvas.height=672;
+            canvas.width=this.width;
+            canvas.height=this.height;
+            // document.getElementById('png-width').value=1520;
             const context=canvas.getContext('2d');
             context.drawImage(img,0,0);
             const href=canvas.toDataURL('image/png');
@@ -197,6 +233,8 @@ const imageSaver={
     },
 
     downloadImg(href){
+        
+        
         const downloadLink=document.createElement('a');
     downloadLink.href=href;
     downloadLink.download=`${this.name}.${this.format}`;
@@ -209,5 +247,10 @@ const imageSaver={
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
+    
+    document.getElementById('png-width').value=1520;
+    document.getElementById('png-height').value=672;
+
+
     }
 };
